@@ -6,4 +6,6 @@ import com.capg.VehicleManagement.entities.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer>{
 
+	public Customer findCustomerByFirstNameAndLastName(String fname, String lname);
+
 }
