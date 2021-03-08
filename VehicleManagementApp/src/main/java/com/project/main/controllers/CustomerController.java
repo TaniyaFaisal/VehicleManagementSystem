@@ -73,4 +73,11 @@ public class CustomerController {
 		return customerService.viewAllCustomersByLocation(loc);
 	}
 	
+	@PostMapping(value="/customersInput/{password}")
+	@ResponseStatus(code = HttpStatus.CREATED) 
+	public Customer addUser(@PathVariable("password") String pass,@RequestBody Customer c) {
+		  customerService.addCustomer(pass, c);
+		  return c;
+	}
+	
 }

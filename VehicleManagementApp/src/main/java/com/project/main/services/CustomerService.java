@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.project.main.entities.Booking;
 import com.project.main.entities.Customer;
+import com.project.main.entities.User;
 import com.project.main.exceptions.CustomerException;
 import com.project.main.exceptions.CustomerNotFoundException;
 import com.project.main.repositories.IBookingRepository;
 import com.project.main.repositories.ICustomerRepository;
+import com.project.main.repositories.IUserRepository;
 import com.project.main.serviceInterfaces.ICustomerService;
 
 @Service
@@ -23,6 +25,9 @@ public class CustomerService implements ICustomerService{
 	
 	@Autowired
 	IBookingRepository bookingRepository;
+	
+	@Autowired 
+	IUserRepository userRepository;
 	
 	@Override
 	public Customer addCustomer(Customer c){
@@ -94,4 +99,20 @@ public class CustomerService implements ICustomerService{
 		}
 		return customers;
 	}
+	
+	public Customer addCustomer(String password,Customer customer) {
+		Customer cust = customerRepository.findCustomerByFirstNameAndLastName(customer.getFirstName(),customer.getLastName());		
+		if(cust == null){
+			User user = new User();
+			user.setRole("customer");
+			user.setUserName(customer.getFirstName());
+			user.setPassword(password);
+			customerRepository.save(customer);
+			userRepository.save(user);
+		}
+		else
+			throw new CustomerException("Customer "+ customer.getFirstName()  +" " +customer.getLastName() + " already exists.");
+		return customer;
+	}
+	
 }
