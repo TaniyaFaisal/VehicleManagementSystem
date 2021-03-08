@@ -1,34 +1,52 @@
 package com.project.main.test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.project.main.entities.Driver;
+import com.project.main.entities.Vehicle;
+import com.project.main.services.VehicleService;
+
+@SpringBootTest
 class VehicleTest {
-
-	@Test
+	
+	Driver driver;
+	Vehicle vehicle;
+	
+	@Autowired
+	VehicleService vehicleService;
+	
+//	@Test
 	void testAddVehicle() {
-		fail("Not yet implemented"); // TODO
+		Driver driver = new Driver(34,"Raj","Sharma","#45,Bangalore","12345672","raj@gmail.com","FG2303");
+		Vehicle vehicle = new Vehicle("KA05827", driver, "Car", "SUV", "Bangalore", "---", 4, 35.00, 1000);
+		vehicleService.addVehicle(vehicle);
 	}
 
-	@Test
+//	@Test
 	void testUpdateVehicle() {
-		fail("Not yet implemented"); // TODO
+		vehicleService.updateVehicle(vehicle);
 	}
 
-	@Test
+//	@Test
 	void testCancelVehicle() {
-		fail("Not yet implemented"); // TODO
+		vehicleService.cancelVehicle(46);
 	}
 
-	@Test
+//	@Test
 	void testViewVehicle() {
-		fail("Not yet implemented"); // TODO
+		Vehicle vehicle = vehicleService.viewVehicle(33);
+		System.out.println(vehicle);
 	}
 
-	@Test
+//	@Test
 	void testViewAllVehicle() {
-		fail("Not yet implemented"); // TODO
+		Driver driver = new Driver(34,"Raj","Sharma","#45,Bangalore","12345672","raj@gmail.com","FG2303");
+		List<Vehicle> vehicles = vehicleService.viewAllVehicle(driver);
+		System.out.println(vehicles);
 	}
 
 }
