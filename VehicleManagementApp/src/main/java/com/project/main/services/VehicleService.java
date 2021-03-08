@@ -54,6 +54,8 @@ public class VehicleService implements IVehicleService{
 		if(vehicle.isPresent()){
 			v = vehicle.get(); 
 			vehicleRepository.delete(v);
+		} else {
+			throw new VehicleNotFoundException("Vehicle with id " +id +" not found");
 		}
 		return v;
 	}
@@ -70,6 +72,9 @@ public class VehicleService implements IVehicleService{
 	@Override
 	public List<Vehicle> viewAllVehicle(Driver driver) {
 		List<Vehicle> vehicles = vehicleRepository.findVehicleByDriver(driver);
+		if(vehicles.isEmpty()) {
+			throw new VehicleNotFoundException("Vehicle not found");
+		}
 		return vehicles;
 	}
 
