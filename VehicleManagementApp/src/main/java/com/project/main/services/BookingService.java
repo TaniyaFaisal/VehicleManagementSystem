@@ -11,12 +11,15 @@ import org.springframework.stereotype.Service;
 
 import com.project.main.entities.Booking;
 import com.project.main.entities.Customer;
+import com.project.main.entities.Payment;
 import com.project.main.entities.Vehicle;
+import com.project.main.exceptions.BookingException;
 import com.project.main.exceptions.BookingNotFoundException;
 import com.project.main.exceptions.CustomerNotFoundException;
 import com.project.main.exceptions.VehicleNotFoundException;
 import com.project.main.repositories.IBookingRepository;
 import com.project.main.repositories.ICustomerRepository;
+import com.project.main.repositories.IPaymentRepository;
 import com.project.main.repositories.IVehicleRepository;
 import com.project.main.serviceInterfaces.IBookingService;
 
@@ -25,6 +28,9 @@ public class BookingService implements IBookingService{
 	
 	@Autowired
 	IBookingRepository bookingRepository;
+	
+	@Autowired
+	IPaymentRepository paymentRepository;
 	
 	@Autowired
 	ICustomerRepository customerRepository;
@@ -62,6 +68,10 @@ public class BookingService implements IBookingService{
 			throw new BookingNotFoundException("Booking with id" +id +"not found.");
 		}
 		Booking b1 = booking.get();
+		Payment payment = paymentRepository.findPaymentsByBooking(b1);
+		if(payment != null) {
+			throw new BookingException("Booking with payment cannot be deleted");
+		}
 		bookingRepository.delete(b1);
 		return b1;
 	}

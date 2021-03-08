@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.project</groupId>
-	<artifactId>bookingModule</artifactId>
+	<artifactId>VehicleManagementSystem</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>VehicleManagementApp</name>
 	<description>Vehicle Management System</description>
