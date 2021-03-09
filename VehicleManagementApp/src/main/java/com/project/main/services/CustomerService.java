@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.project.main.entities.Booking;
 import com.project.main.entities.Customer;
 import com.project.main.entities.User;
-import com.project.main.exceptions.CustomerException;
-import com.project.main.exceptions.CustomerNotFoundException;
+import com.project.main.exceptions.AlreadyExistsException;
+import com.project.main.exceptions.DeletionException;
+import com.project.main.exceptions.NotFoundException;
+import com.project.main.exceptions.ValidationException;
 import com.project.main.repositories.IBookingRepository;
 import com.project.main.repositories.ICustomerRepository;
 import com.project.main.repositories.IUserRepository;
@@ -30,12 +32,42 @@ public class CustomerService implements ICustomerService{
 	IUserRepository userRepository;
 	
 	@Override
-	public Customer addCustomer(Customer c){
+	public Customer addCustomer(Customer c) throws ValidationException{
+		
+		final String emailPattern = "^(.+)@(.+)$";
+		final String mobilePattern = "(0/91)?[7-9][0-9]{9}";
+
+		String email = c.getEmailId();
+		if (email.matches(emailPattern)) {
+			
+			Customer existingemail = customerRepository.findByEmailId(c.getEmailId());
+			if(existingemail != null) {
+				throw new AlreadyExistsException("EmailId Already Exists!");
+			}
+		}
+		
+		else {
+			throw new ValidationException("Invalid Email");
+		}
+		
+		String mobileNo = c.getMobileNumber();
+		if (mobileNo.matches(mobilePattern)) {
+			
+			Customer existingmobileno = customerRepository.findByMobileNumber(c.getMobileNumber());
+			if(existingmobileno != null) {
+				throw new AlreadyExistsException("Mobile Number Already Exists!");
+			}
+		}
+		
+		else {
+			throw new ValidationException("Invalid Mobile Number");
+		}
+		
 		Customer customer = customerRepository.findCustomerByFirstNameAndLastName(c.getFirstName(),c.getLastName());		
 			if(customer == null){
 				customerRepository.save(c);
 			}else
-				throw new CustomerException("Customer "+ c.getFirstName()  +" " +c.getLastName() + " already exists.");
+				throw new AlreadyExistsException("Customer "+ c.getFirstName()  +" " +c.getLastName() + " already exists.");
 			return customer;
 	}
 	
@@ -43,12 +75,12 @@ public class CustomerService implements ICustomerService{
 	public Customer removeCustomer(int id){
 		Optional<Customer> customer = customerRepository.findById(id);
 		if(customer.isEmpty()){
-			throw new CustomerNotFoundException("Customer with id " +id +" not found");
+			throw new NotFoundException("Customer with id " +id +" not found");
  		}
 		Customer c = customer.get(); 
 		List<Booking> booking = bookingRepository.findByCustomer(c);
 		if(!(booking.isEmpty())) {
-			throw new CustomerException("Customer with boooking cannot be deleted");
+			throw new  DeletionException("Customer with boooking cannot be deleted");
 		}
 		customerRepository.delete(c);	
 		return c;
@@ -57,9 +89,13 @@ public class CustomerService implements ICustomerService{
 	@Override
 	@Transactional
 	public Customer updateCustomer(Customer customer) {
-		Customer c = viewCustomer(customer.getCustomerId());
-		c.setEmailId(customer.getEmailId());
+		if(customer != null) {
+			Customer c = viewCustomer(customer.getCustomerId());
+			c.setEmailId(customer.getEmailId());
 		return c;	
+		}
+		else
+			throw new NotFoundException("Customer Does Not Exist");
 	}
 	
 	@Override
@@ -67,7 +103,7 @@ public class CustomerService implements ICustomerService{
 	{
 		Optional<Customer> customer = customerRepository.findById(id);
 		if(customer.isEmpty()){
-			throw new CustomerNotFoundException("Customer with id " +id +" not found");
+			throw new NotFoundException("Customer with id " +id +" not found");
  		}
 		return customer.get();
 	}
@@ -76,7 +112,7 @@ public class CustomerService implements ICustomerService{
 	public List<Customer> viewAllCustomer(String vtype) {
 		List<Customer> customers = customerRepository.findByVehicleType(vtype);
 		if(customers.isEmpty()){
-			throw new CustomerNotFoundException("Customer not found");
+			throw new NotFoundException("Customer not found");
  		}
 		return customers;		
 	}
@@ -85,7 +121,7 @@ public class CustomerService implements ICustomerService{
 	public List<Customer> viewAllCustomersByLocation(String location) {
 		List<Customer> customers = customerRepository.findByVehicleLocation(location);
 		if(customers.isEmpty()){
-			throw new CustomerNotFoundException("Customer not found");
+			throw new NotFoundException("Customer not found");
  		}
 		return customers;		
 	}
@@ -95,7 +131,7 @@ public class CustomerService implements ICustomerService{
 	{	
 		List<Customer> customers = customerRepository.findAll();
 		if(customers.isEmpty()) {
-			throw new CustomerNotFoundException("No customers found");
+			throw new NotFoundException("No customers found");
 		}
 		return customers;
 	}
@@ -111,7 +147,7 @@ public class CustomerService implements ICustomerService{
 			userRepository.save(user);
 		}
 		else
-			throw new CustomerException("Customer "+ customer.getFirstName()  +" " +customer.getLastName() + " already exists.");
+			throw new AlreadyExistsException("Customer "+ customer.getFirstName()  +" " +customer.getLastName() + " already exists.");
 		return customer;
 	}
 	

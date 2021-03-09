@@ -28,10 +28,10 @@ class BookingTest {
 	
 	@BeforeEach
 	void setUp() {
-		customer = new Customer("Test","one","test@gmail.com", "9876543210", "#23,Bangalore");
-		driver = new Driver("Raj","Sharma","#45,Bangalore","12345672","raj@gmail.com","FG2303");
-		vehicle = new Vehicle("KA05828", driver, "Car", "SUV", "Bangalore", "---", 4, 35.00, 1000);
-		booking = new Booking(customer, vehicle, LocalDate.of(2021, 03, 05), LocalDate.of(2021, 03, 06), "----", 5000, 200);
+		customer = new Customer("Test","one","test@gmail.com", "9876543210", "#11,Bangalore");
+		driver = new Driver("Sid","","#22,Bangalore","12345672","raj@gmail.com","FG2303");
+		vehicle = new Vehicle("KA05828", driver, "SUV", "4-wheeler", "Bangalore", "---", 6, 35.00, 1000);
+		booking = new Booking(customer, vehicle, LocalDate.of(2021, 03, 9), LocalDate.of(2021, 03, 10), "Booking for one day", 200);
 	}
 	
 //	@Test
@@ -60,7 +60,7 @@ class BookingTest {
 
 //	@Test
 	void testUpdateBooking() {
-		booking = new Booking(9, customer, vehicle, LocalDate.of(2021, 03, 05), LocalDate.of(2021, 03, 06), "xxxx", 5000, 200);
+		booking = new Booking(9, customer, vehicle, LocalDate.of(2021, 03, 05), LocalDate.of(2021, 03, 06), "xxxx", 200);
 		Booking b = bookingService.updateBooking(booking);
 		assertEquals("xxxx", b.getBookingDescription());
 		System.out.println(b);

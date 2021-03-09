@@ -32,7 +32,7 @@ class PaymentTest {
 		customer = new Customer(32,"Test","one","test@gmail.com", "9876543210", "#23,Bangalore");
 		driver = new Driver(34,"Raj","Sharma","#45,Bangalore","12345672","raj@gmail.com","FG2303");
 		vehicle = new Vehicle(33,"KA05828", driver, "Car", "SUV", "Bangalore", "---", 4, 35.00, 1000);
-		booking = new Booking(39,customer, vehicle, LocalDate.of(2021, 03, 05), LocalDate.of(2021, 03, 06), "----", 5000, 200);
+		booking = new Booking(39,customer, vehicle, LocalDate.of(2021, 03, 05), LocalDate.of(2021, 03, 06), "----", 200);
 		payment = new Payment("NetBanking", LocalDate.of(2021, 03, 05), booking, "Successful");
 	}
 	

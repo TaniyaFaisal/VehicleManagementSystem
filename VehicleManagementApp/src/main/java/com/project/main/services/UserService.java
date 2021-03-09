@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.main.entities.User;
-import com.project.main.exceptions.UserException;
-import com.project.main.exceptions.UserNotFoundException;
+import com.project.main.exceptions.AlreadyExistsException;
+import com.project.main.exceptions.NotAUserException;
+import com.project.main.exceptions.NotFoundException;
 import com.project.main.repositories.IUserRepository;
 import com.project.main.serviceInterfaces.IUserService;
 
@@ -23,7 +24,7 @@ public class UserService implements IUserService{
 		if(u == null) {
 			userRepository.save(user);
 		}else {
-			throw new UserException("User " +user.getUserId()+" already exixts");
+			throw new AlreadyExistsException("User " +user.getUserId()+" already exixts");
 		}
 		return user;
 	}
@@ -32,7 +33,7 @@ public class UserService implements IUserService{
 	public void deleteUser(int id) {
 		Optional<User> user = userRepository.findById(id);
 		if(user.isEmpty()){
-			throw new UserNotFoundException("User not found with id : "+id);
+			throw new NotFoundException("User not found with id : "+id);
 		}
 		User u = user.get();
 		userRepository.delete(u);
@@ -44,7 +45,7 @@ public class UserService implements IUserService{
 			User u = userRepository.findUserByUserNameAndPassword(user.getUserName(), user.getPassword());
 			if(u == null) 
 			{
-				throw new UserException("User name : "+user.getUserName()+" or the User password : "+user.getPassword()+" is invalid");
+				throw new NotAUserException("User name : "+user.getUserName()+" or the User password : "+user.getPassword()+" is invalid");
 			}
 		return user;
 	}

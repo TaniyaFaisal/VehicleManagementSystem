@@ -6,14 +6,14 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.main.entities.Booking;
 import com.project.main.entities.Payment;
 import com.project.main.entities.Vehicle;
-import com.project.main.exceptions.PaymentException;
-import com.project.main.exceptions.PaymentNotFoundException;
+import com.project.main.exceptions.NotFoundException;
 import com.project.main.repositories.IBookingRepository;
 import com.project.main.repositories.IPaymentRepository;
 import com.project.main.serviceInterfaces.IPaymentService;
@@ -35,7 +35,7 @@ public class PaymentService implements IPaymentService{
 			if(booking != null) {
 				p.setBooking(booking.get());
 			}
-		}catch(PaymentException e) {
+		}catch(NotFoundException e) {
 			e.getMessage();	
 		}		
 		paymentRepository.save(p);
@@ -46,7 +46,7 @@ public class PaymentService implements IPaymentService{
 	public Payment cancelPayment(int id) {
 		Optional<Payment> payment = paymentRepository.findById(id);
 		if(payment.isEmpty()){
-			throw new PaymentNotFoundException("Payment with id " +id +" not found");
+			throw new NotFoundException("Payment with id " +id +" not found");
  		}
 		Payment p = payment.get(); 
 		paymentRepository.delete(p);	
@@ -63,7 +63,7 @@ public class PaymentService implements IPaymentService{
 	public List<Payment> viewAllPayment(Vehicle vehicle) {
 		List<Payment> payments = paymentRepository.findPaymentByVehicle(vehicle);
 		if(payments.isEmpty()) {
-			throw new PaymentNotFoundException("No payments found");
+			throw new NotFoundException("No payments found");
 		}
 		return payments;
 	}
@@ -83,7 +83,7 @@ public class PaymentService implements IPaymentService{
 	public List<Payment> viewPayments(){	
 		List<Payment> payments = paymentRepository.findAll();
 		if(payments.isEmpty()) {
-			throw new PaymentNotFoundException("No payments found");
+			throw new NotFoundException("No payments found");
 		}
 		return payments;
 	}

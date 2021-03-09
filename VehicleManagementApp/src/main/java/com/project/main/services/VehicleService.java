@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.main.entities.Driver;
 import com.project.main.entities.Vehicle;
-import com.project.main.exceptions.VehicleNotFoundException;
+import com.project.main.exceptions.NotFoundException;
 import com.project.main.repositories.IDriverRepository;
 import com.project.main.repositories.IVehicleRepository;
 import com.project.main.serviceInterfaces.IVehicleService;
@@ -28,11 +28,11 @@ public class VehicleService implements IVehicleService{
 	@Transactional
 	public Vehicle addVehicle(Vehicle v) {
 		try {
-			Optional<Driver> driver = driverRepository.findById(v.getDriver().getDriverId());
+			Driver driver = driverRepository.findByFirstNameAndLastName(v.getDriver().getFirstName(),v.getDriver().getLastName());
 			if(driver != null) {
-				v.setDriver(driver.get());
+				v.setDriver(driver);
 			}
-		}catch (VehicleNotFoundException e) {
+		}catch (NotFoundException e) {
 			e.getMessage();
 		}	
 		Vehicle vehicle = vehicleRepository.save(v);
@@ -43,6 +43,9 @@ public class VehicleService implements IVehicleService{
 	@Transactional
 	public Vehicle updateVehicle(Vehicle vehicle) {
 		Vehicle v = viewVehicle(vehicle.getVehicleId());
+		if(v == null) {
+			throw new NotFoundException("Vehicle with id " +vehicle.getVehicleId() +" not found");
+		}
 		v.setFixedCharges(vehicle.getFixedCharges());
 		return v;
 	}
@@ -55,7 +58,7 @@ public class VehicleService implements IVehicleService{
 			v = vehicle.get(); 
 			vehicleRepository.delete(v);
 		} else {
-			throw new VehicleNotFoundException("Vehicle with id " +id +" not found");
+			throw new NotFoundException("Vehicle with id " +id +" not found");
 		}
 		return v;
 	}
@@ -64,7 +67,7 @@ public class VehicleService implements IVehicleService{
 	public Vehicle viewVehicle(int  id) {
 		Optional<Vehicle> vehicle = vehicleRepository.findById(id);
 		if(vehicle.isEmpty()){
-			throw new VehicleNotFoundException("Vehicle with id " +id +" not found");
+			throw new NotFoundException("Vehicle with id " +id +" not found");
  		}
 		return vehicle.get();
 	}
@@ -73,7 +76,7 @@ public class VehicleService implements IVehicleService{
 	public List<Vehicle> viewAllVehicle(Driver driver) {
 		List<Vehicle> vehicles = vehicleRepository.findVehicleByDriver(driver);
 		if(vehicles.isEmpty()) {
-			throw new VehicleNotFoundException("Vehicle not found");
+			throw new NotFoundException("Vehicle not found");
 		}
 		return vehicles;
 	}

@@ -20,5 +20,9 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer>{
 	
 	@Query("select b.customer from  Booking b inner join b.vehicle v where v.location =  ?1")
     public List<Customer> findByVehicleLocation(String location);
+	
+	public Customer findByEmailId(String emailId);
+
+	public Customer findByMobileNumber(String mobileNumber);
 
 }
