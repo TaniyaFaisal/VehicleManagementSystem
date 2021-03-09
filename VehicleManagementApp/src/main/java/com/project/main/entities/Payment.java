@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -16,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Payment {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(name="payment_sequence",allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.AUTO ,generator = "payment_sequence")
 	private int paymentId;
 	private String paymentMode;
 	

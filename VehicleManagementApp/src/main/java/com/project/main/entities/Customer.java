@@ -4,11 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Customer {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(name="customer_sequence",allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.AUTO ,generator = "customer_sequence")
 	private int customerId;
 	private String firstName;
 	private String lastName;

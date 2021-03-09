@@ -7,11 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Vehicle {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator(name="vehicle_sequence",allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.AUTO ,generator = "vehicle_sequence")
 	private int vehicleId;
 	private String vehicleNumber;
 	

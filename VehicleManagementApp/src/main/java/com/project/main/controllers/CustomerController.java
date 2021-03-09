@@ -45,7 +45,7 @@ public class CustomerController {
 	
 	@DeleteMapping("/customers/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public void deleteCustomer(@PathVariable("id") int id) {
+	public void removeCustomer(@PathVariable("id") int id) {
 		customerService.removeCustomer(id);
 	}
 	
