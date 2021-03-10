@@ -1,5 +1,7 @@
 package com.project.vm.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,6 +23,7 @@ class ActiveBookingTest {
 	void testViewActiveBookings() {
 		List<Booking> bookings =  activeBookingService.viewActiveBookings();
 		System.out.println(bookings);
+		assertEquals(6, bookings.size());;
 	}
 	
 //	@Test

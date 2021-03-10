@@ -29,7 +29,7 @@ public class Vehicle {
 	private double fixedCharges;
 	
 	public Vehicle() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Vehicle(String vehicleNumber, Driver driver, String type, String category, String location, String description, int capacity,

@@ -31,7 +31,7 @@ public class Payment {
 	private String paymentStatus;
 	
 	public Payment() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public Payment(String paymentMode, LocalDate paymentDate, Booking booking, String paymentStatus) {

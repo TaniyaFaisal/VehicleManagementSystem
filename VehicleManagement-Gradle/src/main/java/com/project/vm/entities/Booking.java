@@ -10,43 +10,52 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 
 @Entity
+@ApiModel(description = "Details about the Booking")
 public class Booking {
 	@Id
 	@SequenceGenerator(name="booking_sequence",allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.AUTO ,generator = "booking_sequence")
+	@ApiModelProperty(notes = "Booking id for a booking")
 	private int bookingId;
 	
 
 	@OneToOne(cascade = CascadeType.PERSIST )
 	@JoinColumn(name = "customerId")
+	@ApiModelProperty(notes = "Customer for booking [specify customer first name and last name]")
 	private Customer customer;
 	
 	@OneToOne(cascade = CascadeType.PERSIST )
 	@JoinColumn(name = "vehicleId")
+	@ApiModelProperty(notes = "Vehicle for booking [specify vehicle number]")
 	private Vehicle vehicle;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-	@Pattern(regexp = "^(0?[1-9]|[12][0-9]|3[01])[-](0?[1-9]|1[012])[-][0-9]{4}$", message = "Date format should 'DD-MM-YYYY'")
+//	@Pattern(regexp = "^(0?[1-9]|[12][0-9]|3[01])[-](0?[1-9]|1[012])[-][0-9]{4}$", message = "Date format should be 'DD-MM-YYYY'")
+	@ApiModelProperty(notes = "Booking date", example = "22-02-2022")
 	private LocalDate bookingDate;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy")
-	@Pattern(regexp = "^(0?[1-9]|[12][0-9]|3[01])[-](0?[1-9]|1[012])[-][0-9]{4}$", message = "Date format should 'DD-MM-YYYY'")
+//	@Pattern(regexp = "^(0?[1-9]|[12][0-9]|3[01])[-](0?[1-9]|1[012])[-][0-9]{4}$", message = "Date format should be 'DD-MM-YYYY'")
+	@ApiModelProperty(notes = "Booking till date", example = "22-02-2022")
 	private LocalDate bookedTillDate;
-	private String bookingDescription;
-	private double totalCost;
 	
-	@Size(min = 50, message = "Distance should be more than 50kms")
+	@ApiModelProperty(notes = "Booking description")
+	private String bookingDescription;
+	@ApiModelProperty(notes = "Total cost for booking")
+	private double totalCost;
+	@ApiModelProperty(notes = "Distance to be travelled")
 	private double distance;
 	
 	public Booking() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	
@@ -60,7 +69,6 @@ public class Booking {
 		this.bookedTillDate = bookedTillDate;
 		this.bookingDescription = bookingDescription;
 		this.distance = distance;
-		setTotalCost(distance);
 	}
 
 	public Booking(int bookingId,Customer customer, Vehicle vehicle, LocalDate bookingDate, LocalDate bookedTillDate,
@@ -121,9 +129,8 @@ public class Booking {
 		return totalCost;
 	}
 
-	public void setTotalCost(double totalCost) {
-		//this.totalCost = totalCost;
-		this.totalCost = (this.distance * this.vehicle.getChargesPerKm()) + this.vehicle.getFixedCharges();
+	public void setTotalCost(double distance) {
+		this.totalCost = (distance * this.vehicle.getChargesPerKm()) + this.vehicle.getFixedCharges();
 	}
 
 	public double getDistance() {

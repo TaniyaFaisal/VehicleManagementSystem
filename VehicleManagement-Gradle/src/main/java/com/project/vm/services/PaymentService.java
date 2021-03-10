@@ -33,7 +33,7 @@ public class PaymentService implements IPaymentService{
 	public Payment addPayment(Payment p) {
 		try {
 			Optional<Booking> booking = bookingRepository.findById(p.getBooking().getBookingId());		
-			if(booking != null) {
+			if(booking.isPresent()) {
 				p.setBooking(booking.get());
 			}
 		}catch(NotFoundException e) {
@@ -56,8 +56,8 @@ public class PaymentService implements IPaymentService{
 
 	@Override
 	public Payment viewPayment(Booking booking) {
-		Payment payment = paymentRepository.findPaymentsByBooking(booking);
-		return payment;
+		return paymentRepository.findPaymentsByBooking(booking);
+		
 	}
 
 	@Override
@@ -71,14 +71,13 @@ public class PaymentService implements IPaymentService{
 
 	@Override
 	public double calculateMonthlyRevenue(LocalDate d1, LocalDate d2) {
-		double revenue = paymentRepository.findTotalPaymentByDates(d1, d2);
-		return revenue;
+		return paymentRepository.findTotalPaymentByDates(d1, d2);
+
 	}
 
 	@Override
 	public double calculateTotalPayment(Vehicle vehicle) {
-		double totalPayment = paymentRepository.findTotalPaymentByVehicle(vehicle);
-		return totalPayment;
+		return paymentRepository.findTotalPaymentByVehicle(vehicle);
 	}
 	
 	public List<Payment> viewPayments(){	

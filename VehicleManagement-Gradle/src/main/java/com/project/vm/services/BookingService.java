@@ -58,8 +58,9 @@ public class BookingService implements IBookingService{
 					+b.getCustomer().getLastName() +" not found.");
 		}
 		b.setCustomer(customer);
-		b.setVehicle(vehicle);		
+		b.setVehicle(vehicle);
 		bookingRepository.save(b);
+		b.setTotalCost(b.getDistance());
 		return b;
 	}
 
@@ -87,11 +88,11 @@ public class BookingService implements IBookingService{
 
 	//	viewAllBooking method returns a list of bookings based on Customer.
 	@Override
-	public List<Booking> viewAllBooking(Customer customer) {
-		Customer c = customerRepository.findCustomerByFirstName(customer.getFirstName());
+	public List<Booking> viewAllBooking(String name) {
+		Customer c = customerRepository.findCustomerByFirstName(name);
 		List<Booking> bookings = bookingRepository.findByCustomer(c);
 		if(bookings.isEmpty()) {
-			throw new NotFoundException("No bookings found for customer : " +customer.getFirstName());
+			throw new NotFoundException("No bookings found for customer : " +name);
 		}
 		return bookings;
 
@@ -99,11 +100,11 @@ public class BookingService implements IBookingService{
 
 	//	viewAllBookingByVehicle method returns a list of bookings based on Vehicle.
 	@Override
-	public List<Booking> viewAllBookingByVehicle(Vehicle v) {
-		Vehicle vehicle = vehicleRepository.findVehicleByVehicleNumber(v.getVehicleNumber());
+	public List<Booking> viewAllBookingByVehicle(String vehicleNumber) {
+		Vehicle vehicle = vehicleRepository.findVehicleByVehicleNumber(vehicleNumber);
 		List<Booking> bookings = bookingRepository.findByVehicle(vehicle);
 		if(bookings.isEmpty()) {
-			throw new NotFoundException("No bookings found for vehicle :" +v.getVehicleNumber());
+			throw new NotFoundException("No bookings found for vehicle :" +vehicleNumber);
 		}
 		return bookings;
 	}
@@ -125,8 +126,7 @@ public class BookingService implements IBookingService{
 		if(booking.isEmpty()) {
 			throw new NotFoundException("Booking with id " +id +" not found.");
 		}
-		Booking b1 = booking.get();
-		return b1;
+		return booking.get();
 	}
 
 	//	viewAllBookings returns a list of all bookings

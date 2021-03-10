@@ -2,7 +2,6 @@ package com.project.vm.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.vm.entities.Booking;
-import com.project.vm.entities.Customer;
-import com.project.vm.entities.Vehicle;
 import com.project.vm.repositories.IBookingRepository;
 import com.project.vm.services.BookingService;
 
@@ -38,7 +35,7 @@ public class BookingController {
 	@Autowired
 	BookingService bookingService;
 	
-	Optional<Booking> bookings = null;
+
 
 	/**
 	 * This method is for adding a booking
@@ -49,11 +46,11 @@ public class BookingController {
 	 * @throws ValidationException
 	 */
 	@PostMapping("/bookings")
-	@ApiOperation(value = "Add a booking", notes = "Provide customer firstname and vehicle number", response = Booking.class)
+	@ApiOperation(value = "Add a booking", notes = "Provide customer firstname and vehicle number and booking details", response = Booking.class)
 	public ResponseEntity<Booking> addBooking(
-			@ApiParam(value = "Booking to be added", required = true) @RequestBody Booking b) {
-		Booking booking = bookingService.addBooking(b);
-		return new ResponseEntity<>(booking,HttpStatus.CREATED);
+			@ApiParam(value = "Booking to be added", required = true) @RequestBody Booking booking) {
+		Booking b = bookingService.addBooking(booking);
+		return new ResponseEntity<>(b,HttpStatus.CREATED);
 	}
 	
 	/**
@@ -107,11 +104,11 @@ public class BookingController {
 	 * @throws NotFoundException
 	 * 
 	 */
-	@GetMapping("/bookingsByCustomer")
+	@GetMapping("/bookingsByCustomer/{name}")
 	@ApiOperation(value = "View booking by customer name", notes = "Provide customer firstname", response = Booking.class)
 	public ResponseEntity<List<Booking>> viewBookingByCustomer(
-			@ApiParam(value = "Customer name to view bookings", required = true) @RequestBody  Customer customer) {
-		List<Booking> bookings = bookingService.viewAllBooking(customer);
+			@ApiParam(value = "Customer name to view bookings", required = true) @PathVariable("name")  String name) {
+		List<Booking> bookings = bookingService.viewAllBooking(name);
 		return new ResponseEntity<>(bookings,HttpStatus.OK);
 	}
 	
@@ -122,11 +119,11 @@ public class BookingController {
 	 * @throws NotFoundException
 	 * 
 	 */
-	@GetMapping("/bookingsByVehicle")
+	@GetMapping("/bookingsByVehicle/{vehicleNumber}")
 	@ApiOperation(value = "View booking by vehicle number", notes = "Provide vehicle number", response = Booking.class)
 	public ResponseEntity<List<Booking>> viewBookingByVehicle(
-			@ApiParam(value = "Vehicle number to view bookings", required = true) @RequestBody Vehicle vehicle) {
-		List<Booking> bookings = bookingService.viewAllBookingByVehicle(vehicle);
+			@ApiParam(value = "Vehicle number to view bookings", required = true) @PathVariable("vehicleNumber") String vehicleNumber) {
+		List<Booking> bookings = bookingService.viewAllBookingByVehicle(vehicleNumber);
 		return new ResponseEntity<>(bookings,HttpStatus.OK);
 	}
 	

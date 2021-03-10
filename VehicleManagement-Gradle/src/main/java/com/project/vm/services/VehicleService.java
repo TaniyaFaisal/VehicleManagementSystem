@@ -37,8 +37,7 @@ public class VehicleService implements IVehicleService{
 		}catch (NotFoundException e) {
 			e.getMessage();
 		}	
-		Vehicle vehicle = vehicleRepository.save(v);
-		return vehicle;
+		return vehicleRepository.save(v);
 	}
 
 	@Override
