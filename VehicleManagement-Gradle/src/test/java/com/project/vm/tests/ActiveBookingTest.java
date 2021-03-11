@@ -22,8 +22,9 @@ class ActiveBookingTest {
 	@Test
 	void testViewActiveBookings() {
 		List<Booking> bookings =  activeBookingService.viewActiveBookings();
+		assertEquals(6, bookings.size());
 		System.out.println(bookings);
-		assertEquals(6, bookings.size());;
+		
 	}
 	
 //	@Test

@@ -82,4 +82,13 @@ public class VehicleService implements IVehicleService{
 		return vehicles;
 	}
 
+	@Override
+	public List<Vehicle> viewAllVehicles() {
+		List<Vehicle> vehicles = vehicleRepository.findAll();
+		if(vehicles.isEmpty()) {
+			throw new NotFoundException("No bookings found");
+		}
+		return vehicles;
+	}
+
 }

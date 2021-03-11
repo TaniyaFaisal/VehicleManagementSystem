@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(path = "/api/v1")
 @Api(value = "Payment", tags = { "PaymentAPI" })
@@ -48,6 +51,7 @@ public class PaymentController {
 	 */
 
 	@PostMapping("/payments")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	@ApiOperation(value = "Add a payment", notes = "Provide booking_id ", response = Payment.class)
 
 	public ResponseEntity<Payment> addPayment(
@@ -64,6 +68,7 @@ public class PaymentController {
 	 * 
 	 */
 	@DeleteMapping("/payments/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "Delete a payment", notes = "Provide payment id", response = Payment.class)
 	public ResponseEntity<String> cancelPayment(
 			@ApiParam(value = "ID value of the payment to be deleted", required = true)@PathVariable("id") int id) {
@@ -79,6 +84,7 @@ public class PaymentController {
 	 * 
 	 */
 	@GetMapping("/payments")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "View allpayments", response = Payment.class)
 	public  ResponseEntity<List<Payment>> viewPayments(){
 		List<Payment> payments = paymentService.viewPayments();
@@ -93,6 +99,7 @@ public class PaymentController {
 	 * 
 	 */
 	@GetMapping("/paymentByBooking")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	@ApiOperation(value = "View payment by booking", notes = "Provide booking id", response = Payment.class)
 	public ResponseEntity<Payment>  viewPaymentByBooking(
 			@ApiParam(value = "ID value to view payment", required = true)@RequestBody Booking booking){
@@ -108,6 +115,7 @@ public class PaymentController {
 	 * 
 	 */
 	@GetMapping("/paymentsByVehicle")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "View payment by vehicle", notes = "Provide vehicle number", response = Payment.class)
 	public ResponseEntity<List<Payment>> findPaymentsByVehicle(
 			@ApiParam(value = "Vehicle number to view payments", required = true)@RequestBody Vehicle vehicle) {
@@ -123,6 +131,7 @@ public class PaymentController {
 	 * 
 	 */
 	@GetMapping("/totalPaymentByVehicle")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "Calculate TotalPayment by vehicle", notes = "Provide vehicle number", response = Payment.class)
 	public ResponseEntity<Double> calculateTotalPaymentByVehicle(
 			@ApiParam(value = "Vehicle number to calculate TotalPayment ", required = true)	@RequestBody Vehicle vehicle) {
@@ -139,6 +148,7 @@ public class PaymentController {
 	 */
 
 	@GetMapping("/calculateMonthlyRevenue/{date1}/{date2}")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "Calculate MonthlyRevenue by localdates", notes = "Provide LocalDates", response = Payment.class)
 	public ResponseEntity<Double> calculateTMonthlyRevenue(
 			@ApiParam(value = "localDate1 to calculate TotalPayment ", required = true)@PathVariable("date1") 

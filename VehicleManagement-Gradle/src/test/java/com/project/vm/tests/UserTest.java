@@ -14,20 +14,24 @@ class UserTest {
 	UserService userService;
 	
 //	@Test
-	void testAddUser() {
-		User user = new User("testUser","pwd", "Customer");
-		User u = userService.addUser(user);
+	void testUpdateUser() {
+		User user = new User();
+		user.setUsername("Raj");
+		user.setEmail("rak@gmail.com");
+		User u = userService.updateUser(user);
 		System.out.print(u);
 	}
 
 //	@Test
 	void testDeleteUser() {
-		 userService.deleteUser(3);
+		 userService.deleteUser(3L);
 	}
 
 //	@Test
 	void testValidateUser() {
-		 User user = new User("testUser","pwd", "Customer");
+		 User user = new User();
+		 user.setUsername("Raj");
+		user.setEmail("rak@gmail.com");
 		 User user2 = userService.validateUser(user);
 	}
 

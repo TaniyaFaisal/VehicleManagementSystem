@@ -61,9 +61,5 @@ class CustomerTest {
 		assertEquals(4, customers.size());
 	}
 
-//	@Test
-	void testAddCustomerWithPassword() {
-		Customer customer = new Customer("Cust", "Test", "customer@gmail.com", "9874561230", "Delhi");
-		customerService.addCustomer("pwd123", customer);
-	}
+
 }

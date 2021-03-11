@@ -11,4 +11,5 @@ public interface IVehicleService {
 	public Vehicle cancelVehicle(int id);
 	public Vehicle viewVehicle(int id);
 	public List<Vehicle> viewAllVehicle(Driver driver) ;
+	List<Vehicle> viewAllVehicles();
 }

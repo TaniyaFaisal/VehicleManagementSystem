@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(path = "/api/v1")
 @Api(value = "Booking", tags = { "BookingAPI" })
@@ -46,6 +49,7 @@ public class BookingController {
 	 * @throws ValidationException
 	 */
 	@PostMapping("/bookings")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	@ApiOperation(value = "Add a booking", notes = "Provide customer firstname and vehicle number and booking details", response = Booking.class)
 	public ResponseEntity<Booking> addBooking(
 			@ApiParam(value = "Booking to be added", required = true) @RequestBody Booking booking) {
@@ -61,6 +65,7 @@ public class BookingController {
 	 * 
 	 */
 	@GetMapping("/bookings")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "View allbookings", response = Booking.class)
 	public ResponseEntity<List<Booking>> viewAllBooking(){
 		List<Booking> bookings = bookingService.viewAllBookings();	
@@ -75,6 +80,7 @@ public class BookingController {
 	 * 
 	 */
 	@DeleteMapping("bookings/{id}")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	@ApiOperation(value = "Delete a booking", notes = "Provide booking id", response = Booking.class)
 	public ResponseEntity<String> deleteBooking(
 			@ApiParam(value = "ID value of the booking to be deleted", required = true) @PathVariable("id") int id) {
@@ -90,6 +96,7 @@ public class BookingController {
 	 * 
 	 */
 	@PutMapping("/bookings")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	@ApiOperation(value = "Update a booking", notes = "Provide booking id, new bookedTillDate and new description", response = Booking.class)
 	public ResponseEntity<String> updateBooking(
 			@ApiParam(value = "Booking to be updated", required = true) @RequestBody Booking booking) {
@@ -105,6 +112,7 @@ public class BookingController {
 	 * 
 	 */
 	@GetMapping("/bookingsByCustomer/{name}")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "View booking by customer name", notes = "Provide customer firstname", response = Booking.class)
 	public ResponseEntity<List<Booking>> viewBookingByCustomer(
 			@ApiParam(value = "Customer name to view bookings", required = true) @PathVariable("name")  String name) {
@@ -120,6 +128,7 @@ public class BookingController {
 	 * 
 	 */
 	@GetMapping("/bookingsByVehicle/{vehicleNumber}")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "View booking by vehicle number", notes = "Provide vehicle number", response = Booking.class)
 	public ResponseEntity<List<Booking>> viewBookingByVehicle(
 			@ApiParam(value = "Vehicle number to view bookings", required = true) @PathVariable("vehicleNumber") String vehicleNumber) {
@@ -135,6 +144,7 @@ public class BookingController {
 	 * 
 	 */
 	@GetMapping("/bookingsByDate/{date}")
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "View bookings by booking date", notes = "Provide booking date", response = Booking.class)
 	public ResponseEntity<List<Booking>> viewBookingByDate(
 			@ApiParam(value = "Booking date to view bookings", required = true) @PathVariable("date") 
@@ -151,6 +161,7 @@ public class BookingController {
 	 * 
 	 */
 	@GetMapping("/bookings/{id}")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	@ApiOperation(value = "View booking by id", notes = "Provide booking id", response = Booking.class)
 	public ResponseEntity<Booking> viewBookingById(
 			@ApiParam(value = "ID value to view booking", required = true) @PathVariable("id") int id) {

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.project.vm.entities.Booking;
 import com.project.vm.entities.Customer;
-import com.project.vm.entities.User;
 import com.project.vm.exceptions.AlreadyExistsException;
 import com.project.vm.exceptions.DeletionException;
 import com.project.vm.exceptions.NotFoundException;
@@ -136,21 +135,6 @@ public class CustomerService implements ICustomerService{
 			throw new NotFoundException("No customers found");
 		}
 		return customers;
-	}
-	
-	public Customer addCustomer(String password,Customer customer) {
-		Customer cust = customerRepository.findCustomerByFirstNameAndLastName(customer.getFirstName(),customer.getLastName());		
-		if(cust == null){
-			User user = new User();
-			user.setRole("customer");
-			user.setUserName(customer.getFirstName());
-			user.setPassword(password);
-			customerRepository.save(customer);
-			userRepository.save(user);
-		}
-		else
-			throw new AlreadyExistsException("Customer "+ customer.getFirstName()  +" " +customer.getLastName() + " already exists.");
-		return customer;
 	}
 	
 }

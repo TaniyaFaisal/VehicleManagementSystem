@@ -76,7 +76,7 @@ class BookingTest {
 	void testDeleteBooking() {
 		int id = 6;
 		Booking b = bookingService.cancelBooking(id);
-		assertTrue(b != null);
+		assertNotNull(b);
 	}
 	
 	@Test
