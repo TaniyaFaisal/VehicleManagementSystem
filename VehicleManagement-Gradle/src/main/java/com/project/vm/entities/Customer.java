@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @Entity
 public class Customer {
@@ -20,8 +19,8 @@ public class Customer {
 	@Pattern(regexp = "^(.+)@(.+)$", message = "Provide valid email")
 	private String emailId;
 	
-	@Pattern(regexp = "[0-9]", message = "Numbers only")
-	@Size(min = 10, max = 10, message = "Mobile Number should be 10 digits")
+//	@Pattern(regexp = "[0-9]", message = "Numbers only")
+//	@Size(min = 10, max = 10, message = "Mobile Number should be 10 digits")
 	private String mobileNumber;
 	private String address;
 	

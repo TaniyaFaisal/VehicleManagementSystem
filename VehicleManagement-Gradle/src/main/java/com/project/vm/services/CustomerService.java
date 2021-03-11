@@ -36,7 +36,7 @@ public class CustomerService implements ICustomerService{
 	public Customer addCustomer(Customer c) throws ValidationException{
 		
 		final String emailPattern = "^(.+)@(.+)$";
-		final String mobilePattern = "(0/91)?[7-9][0-9]{9}";
+		final String mobilePattern = "[0-9]{10}";
 
 		String email = c.getEmailId();
 		if (email.matches(emailPattern)) {
