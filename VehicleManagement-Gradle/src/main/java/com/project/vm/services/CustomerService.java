@@ -61,7 +61,7 @@ public class CustomerService implements ICustomerService{
 		}
 		
 		else {
-			throw new ValidationException("Invalid Mobile Number");
+			throw new ValidationException("Mobile number should be 10 digits");
 		}
 		
 		Customer customer = customerRepository.findCustomerByFirstNameAndLastName(c.getFirstName(),c.getLastName());		
