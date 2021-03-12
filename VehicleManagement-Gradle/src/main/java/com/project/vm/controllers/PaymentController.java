@@ -3,6 +3,8 @@ package com.project.vm.controllers;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -34,6 +36,8 @@ import io.swagger.annotations.ApiParam;
 @Api(value = "Payment", tags = { "PaymentAPI" })
 
 public class PaymentController {
+	static final Logger log = LoggerFactory.getLogger(PaymentController.class);
+	
 	@Autowired
 	IPaymentRepository paymentRepository;
 	@Autowired

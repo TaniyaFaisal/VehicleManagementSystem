@@ -3,6 +3,8 @@ package com.project.vm.controllers;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -38,7 +40,7 @@ public class BookingController {
 	@Autowired
 	BookingService bookingService;
 	
-
+	static final Logger log = LoggerFactory.getLogger(BookingController.class);
 
 	/**
 	 * This method is for adding a booking
@@ -111,8 +113,8 @@ public class BookingController {
 	 * @throws NotFoundException
 	 * 
 	 */
-	@GetMapping("/bookingsByCustomer/{name}")
-	@PreAuthorize("hasRole('ADMIN')")
+	@GetMapping("/bookingsByCustomer/{name}") 
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
 	@ApiOperation(value = "View booking by customer name", notes = "Provide customer firstname", response = Booking.class)
 	public ResponseEntity<List<Booking>> viewBookingByCustomer(
 			@ApiParam(value = "Customer name to view bookings", required = true) @PathVariable("name")  String name) {

@@ -43,12 +43,12 @@ class BookingTest {
 
 	@Test
 	void testAddBooking() {
-		customer.setFirstName("Abhi");
-		customer.setLastName("Sharma");
-		vehicle.setVehicleNumber("KA053277");
-		booking = new Booking(customer, vehicle,LocalDate.now(), LocalDate.of(2021, 03, 11), "Booking for one day", 200);
+		customer.setFirstName("Shreya");
+		customer.setLastName("Sinha");
+		vehicle.setVehicleNumber("KA037777");
+		booking = new Booking(customer, vehicle,LocalDate.now(), LocalDate.of(2021, 03, 18), "Booking for 3 days", 200);
 		Booking b= bookingService.addBooking(booking);
-		assertTrue(b != null);
+		assertNotNull(b);
 	}
 	
 	@Test
@@ -69,12 +69,12 @@ class BookingTest {
 	void testViewAllBookings() {
 		List<Booking> bookings = bookingService.viewAllBookings();
 		System.out.println(bookings);
-		assertEquals(5, bookings.size());
+		assertEquals(3, bookings.size());
 	}
 
 	@Test
 	void testDeleteBooking() {
-		int id = 6;
+		int id = 3;
 		Booking b = bookingService.cancelBooking(id);
 		assertNotNull(b);
 	}
@@ -92,7 +92,7 @@ class BookingTest {
 	
 	@Test
 	void testDeleteBookingWithPayment() {
-		int id = 3;
+		int id = 2;
 		Exception exception = assertThrows(DeletionException.class, () -> {
 			bookingService.cancelBooking(id);
 	    });
@@ -103,7 +103,7 @@ class BookingTest {
 
 	@Test
 	void testViewBooking() {
-		Booking b = bookingService.viewBooking(4);
+		Booking b = bookingService.viewBooking(2);
 		System.out.println(b);
 		assertNotNull(b);
 	}
@@ -121,17 +121,17 @@ class BookingTest {
 
 	@Test
 	void testUpdateBooking() {
-		booking.setBookingId(3);
-		booking.setBookedTillDate(LocalDate.of(2021, 03, 13));
+		booking.setBookingId(2);
+		booking.setBookedTillDate(LocalDate.of(2021, 03, 18));
 		booking.setBookingDescription("Booking for 3 days");
 		Booking b = bookingService.updateBooking(booking);
 		assertEquals("Booking for 3 days", b.getBookingDescription());
-		assertEquals(LocalDate.of(2021, 03, 13), b.getBookedTillDate());
+		assertEquals(LocalDate.of(2021, 03, 18), b.getBookedTillDate());
 	}
 
 	@Test
 	void testViewBookingByCustomer() {
-		List<Booking> bookings = bookingService.viewAllBooking("Priya");
+		List<Booking> bookings = bookingService.viewAllBooking("Abhi");
 		assertNotNull(bookings);
 	}
 	
@@ -147,7 +147,7 @@ class BookingTest {
 
 	@Test
 	void testViewBookingByVehicle() {
-		List<Booking> bookings = bookingService.viewAllBookingByVehicle("KA053279");
+		List<Booking> bookings = bookingService.viewAllBookingByVehicle("KA05687");
 		assertNotNull(bookings);
 	}
 
@@ -164,14 +164,14 @@ class BookingTest {
 
 	@Test
 	void testViewBookingByBookingDate() {
-		List<Booking> bookings = bookingService.viewAllBookingByDate(LocalDate.of(2021, 03, 9));
+		List<Booking> bookings = bookingService.viewAllBookingByDate(LocalDate.of(2021, 03, 15));
 		assertNotNull(bookings);
 	}
 	
 	@Test
 	void testViewBookingByInvalidDate() {
 		Exception exception = assertThrows(NotFoundException.class, () -> {
-			bookingService.viewAllBookingByDate(LocalDate.of(2000, 03, 01));
+			bookingService.viewAllBookingByDate(LocalDate.of(2021, 03, 30));
 	    });
 	    String expectedMessage = "No bookings found";
 	    String actualMessage = exception.getMessage();

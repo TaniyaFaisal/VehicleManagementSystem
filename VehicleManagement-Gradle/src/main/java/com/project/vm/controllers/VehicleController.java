@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(path = "/api/v1")
 @Api(value = "Payment", tags = { "PaymentAPI" })
 public class VehicleController {
+	
+	static final Logger log = LoggerFactory.getLogger(VehicleController.class);
 	
 	@Autowired
 	VehicleService vehicleService;

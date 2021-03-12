@@ -2,6 +2,8 @@ package com.project.vm.controllers;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,8 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping(path = "/api/v1")
 public class UserController {
 
+	static final Logger log = LoggerFactory.getLogger(UserController.class);
+	
 	@Autowired
 	UserService userService;
 
