@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(path = "/api/v1")
-@Api(value = "Payment", tags = { "PaymentAPI" })
+@Api(value = "Vehicle", tags = { "VehicleAPI" })
 public class VehicleController {
 	
 	static final Logger log = LoggerFactory.getLogger(VehicleController.class);

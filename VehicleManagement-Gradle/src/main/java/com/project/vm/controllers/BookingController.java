@@ -150,7 +150,7 @@ public class BookingController {
 	@ApiOperation(value = "View bookings by booking date", notes = "Provide booking date", response = Booking.class)
 	public ResponseEntity<List<Booking>> viewBookingByDate(
 			@ApiParam(value = "Booking date to view bookings", required = true) @PathVariable("date") 
-    @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate  date) {
+			@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate  date) {
 		List<Booking> bookings = bookingService.viewAllBookingByDate(date);
 		return new ResponseEntity<>(bookings,HttpStatus.OK);
 	}
@@ -169,6 +169,22 @@ public class BookingController {
 			@ApiParam(value = "ID value to view booking", required = true) @PathVariable("id") int id) {
 		Booking booking = bookingService.viewBooking(id);
 		return new ResponseEntity<>(booking,HttpStatus.OK);
+	}
+	
+	/**
+	 * This method is for fetching a list of bookings by customer email
+	 * 
+	 * @return List<Booking>
+	 * @throws NotFoundException
+	 * 
+	 */
+	@GetMapping("/bookingsByCustomerEmail/{email}")
+	@PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
+	@ApiOperation(value = "View booking by customer email", notes = "Provide customer email", response = Booking.class)
+	public ResponseEntity<List<Booking>> viewBookingByCustomerEmail(
+			@ApiParam(value = "Email id to view booking", required = true) @PathVariable("email") String email) {
+		List<Booking> bookings = bookingService.viewBookingsByCustomerEmail(email);
+		return new ResponseEntity<>(bookings,HttpStatus.OK);
 	}
 	
 }

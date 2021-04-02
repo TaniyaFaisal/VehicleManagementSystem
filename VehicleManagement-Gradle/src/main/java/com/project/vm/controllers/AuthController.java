@@ -39,7 +39,7 @@ import com.project.vm.security.services.UserDetailsImpl;
 @RequestMapping("/api/auth")
 public class AuthController {
 	
-	static final Logger log = LoggerFactory.getLogger(AuthControlller.class);
+	static final Logger log = LoggerFactory.getLogger(AuthController.class);
 	
 	@Autowired
 	AuthenticationManager authenticationManager;

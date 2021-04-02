@@ -81,6 +81,7 @@ public class BookingService implements IBookingService{
 	@Transactional
 	public Booking updateBooking(Booking b) {
 		Booking booking1 = this.viewBooking(b.getBookingId());
+		booking1.setBookingDate(b.getBookingDate());
 		booking1.setBookedTillDate(b.getBookedTillDate());
 		booking1.setBookingDescription(b.getBookingDescription());
 		return booking1;
@@ -137,5 +138,14 @@ public class BookingService implements IBookingService{
 		}
 		return bookings;
 	}
-
+	
+	//	viewBookingsByCustomerEmail returns a list of all bookings by customer email
+	public List<Booking> viewBookingsByCustomerEmail(String email){
+		List<Booking> bookings = bookingRepository.findByCustomerEmail(email);
+		if(bookings.isEmpty()) {
+			throw new NotFoundException("No bookings found");
+		}
+		return bookings;
+	}
+	
 }

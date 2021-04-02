@@ -59,7 +59,7 @@ class PaymentTest {
 		System.out.println(payments);
 	}
 	
-	@Test
+//	@Test
 	void testViewPaymentsByVehicle() {
 		List<Payment> payments = paymentService.viewAllPayment(vehicle);
 		System.out.println(payments);
@@ -71,7 +71,7 @@ class PaymentTest {
 		System.out.println(revenue);
 	}
 
-//	@Test
+	@Test
 	void testCalculateTotalPayment() {
 		double totalPayment = paymentService.calculateTotalPayment(vehicle);
 		System.out.println(totalPayment);

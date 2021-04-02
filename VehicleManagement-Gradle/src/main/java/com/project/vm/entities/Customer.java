@@ -20,7 +20,6 @@ public class Customer {
 	private String emailId;
 	
 	@Pattern(regexp = "[0-9]{10}", message = "Mobile number should be 10 digits")
-//	@Size(min = 10, max = 10, message = "Mobile Number should be 10 digits")
 	private String mobileNumber;
 	private String address;
 	

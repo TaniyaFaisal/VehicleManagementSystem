@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModel;
@@ -37,13 +39,13 @@ public class Booking {
 	@ApiModelProperty(notes = "Vehicle for booking [specify vehicle number]")
 	private Vehicle vehicle;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-//	@Pattern(regexp = "^(0?[1-9]|[12][0-9]|3[01])[-](0?[1-9]|1[012])[-][0-9]{4}$", message = "Date format should be 'DD-MM-YYYY'")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@ApiModelProperty(notes = "Booking date", example = "22-02-2022")
 	private LocalDate bookingDate;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy")
-//	@Pattern(regexp = "^(0?[1-9]|[12][0-9]|3[01])[-](0?[1-9]|1[012])[-][0-9]{4}$", message = "Date format should be 'DD-MM-YYYY'")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@ApiModelProperty(notes = "Booking till date", example = "22-02-2022")
 	private LocalDate bookedTillDate;
 	
